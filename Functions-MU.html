@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Equations</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h1>F(x) graphs - Mathematical Equations</h1>
+    <!-- JSX graphs board-->
+    <div id="jxgbox" class="jxgbox" style="width: 800px; height: 800px;"></div>
+    <hr>
+    <!--Board resize HTML-->
+    <label for="width">Width: </label>
+    <input id="width" type="number" value="800">
+    <label for="height">Height: </label>
+    <input id="height" type="number" value="800">
+    <button onclick="resizeBoard()">Resize Board</button>
+    <br><br>
+    <label for="strokeWidth">Set Stroke Width: </label>
+    <input id="strokeWidth" type="number" value="6">
+    <button onclick="updateStrokeWidth()">Update Stroke Width</button>
+    <button onclick="toggleColorsForVideo()">Change for Video Use Colours</button>
+
+    <hr>
+    <div class="alert alert-primary" role="alert">
+        Reminder: You will download two files once you click on the export button. <br>
+        Please upload both files onto relevant Google Drive for record.
+    </div>
+    <button onclick="exportBoard()">Export as image</button>
+    <br>
+    <hr>
+    <!--Tabs for different functions-->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="fx-tab" data-bs-toggle="tab" href="#fx" role="tab" aria-controls="fx" aria-selected="true">y = f(x)</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="circle-tab" data-bs-toggle="tab" href="#circle" role="tab" aria-controls="circle" aria-selected="false">Circle Equation</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="ellipse-tab" data-bs-toggle="tab" href="#ellipse" role="tab" aria-controls="ellipse" aria-selected="false">Ellipse Equation</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="hyperbola-tab" data-bs-toggle="tab" href="#hyperbola" role="tab" aria-controls="hyperbola" aria-selected="false">Equation for Hyperbola</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="piecewise-tab" data-bs-toggle="tab" href="#piecewise" role="tab" aria-controls="piecewise" aria-selected="false">Piecewise Function</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="fx" role="tabpanel" aria-labelledby="fx-tab">
+        <!-- Content for y = f(x) -->
+        <br>
+        <!--Tip-->
+        <div class="alert alert-primary" role="alert">
+            Tips: Use the <a href="https://www.w3schools.com/jsref/jsref_obj_math.asp" target="_blank">Math.function()</a> function to writing the correct equation<br>
+        </div>
+        <div class="alert alert-danger" role="alert">
+            The equation is not using LaTex. Please use function mentioned above, or simple equation like + - * /
+          </div>
+        <!--Update existing lines-->
+        <!--1st lines-->
+        <p><strong>1st line</strong></p>
+        <label for="equation">Add Equation for blue line (use 'x' as the variable): </label>
+        <input id="equation" type="text" value="x*x">&nbsp; <br>
+        <label for="lowerBound1">Lower Bound for Line 1: </label>
+        <input id="lowerBound1" type="number" value="-50" style="width:5%">&nbsp;
+        <label for="upperBound1">Upper Bound for Line 1: </label>
+        <input id="upperBound1" type="number" value="50" style="width:5%">&nbsp;
+         
+        <select id="colorForf1">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+            <option value="#850dca">Purple</option>
+            <option value="#898054">Brown</option>
+        </select>
+        <button onclick="changeLineColor('colorForf1', f1)">Change Color</button>
+        <button onclick="addFirstLine()">Add/update First Line</button>&nbsp;<button onclick="removeFirstLine()">Remove First Line</button>
+        <br><br>
+        <!--2nd lines-->
+        <p><strong>2nd line</strong></p>
+        <label for="equation2">Add Equation 2 for orange line (use 'x' as the variable): </label>
+        <input id="equation2" type="text" value="">&nbsp;<br>
+        <label for="lowerBound2">Lower Bound for Line 2: </label>
+        <input id="lowerBound2" type="number" value="-50" style="width:5%">&nbsp;
+        <label for="upperBound2">Upper Bound for Line 2: </label>
+        <input id="upperBound2" type="number" value="50" style="width:5%">&nbsp;
+        <select id="colorForf2">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+            <option value="#850dca">Purple</option>
+            <option value="#898054">Brown</option>
+        </select>
+        <button onclick="changeLineColor('colorForf2', f2)">Change Color</button>
+        <button onclick="addSecondLine()">Add/update Second Line</button>&nbsp;<button onclick="removeSecondLine()">Remove Second Line</button>
+        <br><br>
+        <!--3rd lines-->
+        <p><strong>3rd line</strong></p>
+        <label for="equation3">Add Equation 3 for green line (use 'x' as the variable): </label>
+        <input id="equation3" type="text" value="">&nbsp;<br>
+        <label for="lowerBound3">Lower Bound for Line 3: </label>
+        <input id="lowerBound3" type="number" value="-50" style="width:5%">&nbsp;
+        <label for="upperBound3">Upper Bound for Line 3: </label>
+        <input id="upperBound3" type="number" value="50" style="width:5%">&nbsp;
+        <select id="colorForf3">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+            <option value="#850dca">Purple</option>
+            <option value="#898054">Brown</option>
+        </select>
+        <button onclick="changeLineColor('colorForf3', f3)">Change Color</button>
+        <button onclick="addThirdLine()">Add/update Third Line</button>&nbsp;<button onclick="removeThridLine()">Remove Thrid Line</button>
+        <br><br>
+        <!--4th lines-->
+        <p><strong>4th line</strong></p>
+        <label for="equation4">Add Equation 4 for red line (use 'x' as the variable): </label>
+        <input id="equation4" type="text" value="">&nbsp;
+        <br>
+        <label for="lowerBound4">Lower Bound for Line 4: </label>
+        <input id="lowerBound4" type="number" value="-50" style="width:5%">&nbsp;
+        <label for="upperBound4">Upper Bound for Line 4: </label>
+        <input id="upperBound4" type="number" value="50" style="width:5%">&nbsp;
+        <select id="colorForf4">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+            <option value="#850dca">Purple</option>
+            <option value="#898054">Brown</option>
+        </select>
+        <button onclick="changeLineColor('colorForf4', f4)">Change Color</button>
+        <button onclick="addFourthLine()">Add/update Fourth Line</button>&nbsp;<button onclick="removeFourthLine()">Remove Fourth Line</button>
+        <br><br>
+        <!--5th lines-->
+        <p><strong>5th line</strong></p>
+        <label for="equation5">Add Equation 5 (use 'x' as the variable): </label>
+        <input id="equation5" type="text" value="">&nbsp;
+        <br>
+        <label for="lowerBound5">Lower Bound for Line 5: </label>
+        <input id="lowerBound5" type="number" value="-50" style="width:5%">&nbsp;
+        <label for="upperBound5">Upper Bound for Line 5: </label>
+        <input id="upperBound5" type="number" value="50" style="width:5%">&nbsp;
+        <select id="colorForf5">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+            <option value="#850dca">Purple</option>
+            <option value="#898054">Brown</option>     
+        </select>
+        <button onclick="changeLineColor('colorForf5', f5)">Change Color</button>
+        <button onclick="addFifthLine()">Add/update Fifth Line</button>&nbsp;<button onclick="removeFifthLine()">Remove Fifth Line</button>
+
+      </div>
+      <div class="tab-pane fade" id="circle" role="tabpanel" aria-labelledby="circle-tab">
+        <!-- Content for Circle Equation -->
+        <br>
+        <p>Equation: \((x - k)^2 + (y - h)^2 = r^2\)</p>
+        <label for="circle-k"> k:  </label>&nbsp;<input type="number" id="circle-k">&nbsp;&nbsp;
+        <label for="circle-h"> h:  </label>&nbsp;<input type="number" id="circle-h">&nbsp;&nbsp;
+        <label for="circle-r"> r:  </label>&nbsp;<input type="number" id="circle-r">&nbsp;&nbsp;
+        <button onclick="generateCircle()">Generate Circle</button>
+        <button onclick="removeCircle()">Remove Circle</button>
+        <select id="colorForCircle">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+        </select>
+        <button onclick="changeLineColor('colorForCircle', circle)">Change Color</button>
+      </div>
+      <div class="tab-pane fade" id="ellipse" role="tabpanel" aria-labelledby="ellipse-tab">
+        <!-- Content for Ellipse Equation -->
+        <br>
+        <p>Equation: \( \frac{(x - h)^2}{a^2} + \frac{(y - k)^2}{b^2} = 1 \)</p>
+
+        <label for="ellipse-a">a:</label>
+        <input type="number" id="ellipse-a">
+        <label for="ellipse-b">b:</label>
+        <input type="number" id="ellipse-b">
+        <label for="ellipse-h">h (center x-coordinate):</label>
+        <input type="number" id="ellipse-h">
+        <label for="ellipse-k">k (center y-coordinate):</label>
+        <input type="number" id="ellipse-k"> <br><br>
+        <button onclick="updateEllipse()">Generate Graph</button>
+        <button onclick="removeEllipse()">Remove Graph</button>
+        <select id="colorForEllipse">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+        </select>
+        <button onclick="changeLineColor('colorForEllipse', ellipse_curve)">Change Color</button>
+
+      </div>
+      <div class="tab-pane fade" id="hyperbola" role="tabpanel" aria-labelledby="hyperbola-tab">
+        <!-- Content for Equation for Hyperbola -->
+        <br>
+        <p>Equation for Horizontal Hyperbola: \( \frac{(x - h)^2}{a^2} - \frac{(y - k)^2}{b^2} = 1 \)</p>
+
+        <label for="hyperbola-a">a: </label>&nbsp;<input type="number" id="hyperbola-a" >
+        <label for="hyperbola-b">b: </label>&nbsp;<input type="number" id="hyperbola-b" >
+        <label for="hyperbola-h">h: </label>&nbsp;<input type="number" id="hyperbola-h" >
+        <label for="hyperbola-k">k: </label>&nbsp;<input type="number" id="hyperbola-k" >
+        <hr>
+        <button onclick="generateHyperbola()">Generate Graph</button>
+        <button onclick="removeHyperbola()">Remove Graph</button>
+        <select id="colorForHyperbola">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+        </select>
+        <button onclick="changeLineColor('colorForHyperbola', curve1)">Change Color of Curve 1</button>
+        <button onclick="changeLineColor('colorForHyperbola', curve2)">Change Color of Curve 1</button>
+      </div>
+      <div class="tab-pane fade" id="piecewise" role="tabpanel" aria-labelledby="piecewise-tab">
+        <!-- Content for Piecewise Function -->
+        <br>
+            <p> \( f(x) = \left\{
+                \begin{array}{ll}
+                    \text{Function 1 (for \( x < x_{\text{limit2}} \))} \\
+                    \text{Function 2 (for \( x_{\text{limit1}} \leq x < x_{\text{limit2}} \))} \\
+                    \text{Function 3 (for \( x \geq x_{\text{limit1}} \))}
+                \end{array}
+                \right. \)
+            </p>
+
+            <label for="piecewise-function1">Function 1:</label>
+            <input type="text" id="piecewise-function1"> <br>
+            
+            <label for="piecewise-function2">Function 2 :</label>
+            <input type="text" id="piecewise-function2" placeholder="(Can skip if only 2 funcs)"> <br>
+            
+            <label for="piecewise-function3">Function 3 :</label>
+            <input type="text" id="piecewise-function3"> <br><br>
+        
+            <label for="piecewise-xLimit1">\( x_{\text{limit1}} \):</label>
+            <input type="number" id="piecewise-xLimit1" placeholder="Enter first x limit">
+            
+            <label for="piecewise-xLimit2">\( x_{\text{limit2}} \):</label>
+            <input type="number" id="piecewise-xLimit2" placeholder="Enter second x limit"> <br><br>
+            
+            <button onclick="updatePiecewise()">Generate Graph</button>
+            <button onclick="removePiecewise()">Remove Graph</button>
+            <select id="colorForPiecewise">
+                <option value="#006DAE">Blue</option>
+                <option value="#4d934d">Green</option>
+                <option value="#ff884d">Orange</option>
+                <option value="#444242">Grey</option>
+            </select>
+            <button onclick="changeLineColor('colorForPiecewise', plot)">Change Color</button>
+      </div>
+    </div>
+
+
+        <!-- Additional controls for vertical and horizontal lines -->
+        <br><hr>
+        <label for="x_Verline">Add Vertical Line at x = </label>
+        <input id="x_Verline" type="number" value="">&nbsp;
+        <select id="lineColor">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+        </select>
+        <input type="checkbox" id="dashedLine" name="dashedLine">
+        <label for="dashedLine">Dashed Line</label>
+        <button onclick="addVerticalLine()">Add Vertical Line</button>
+        &nbsp;<button onclick="removeVerticalLine()">Remove Vertical Line</button>
+
+
+
+        <br>
+
+        <label for="y_Horline">Add Horizontal Line at y = </label>
+        <input id="y_Horline" type="number" value="">&nbsp;
+        <select id="lineColorHorizontal">
+            <option value="#006DAE">Blue</option>
+            <option value="#4d934d">Green</option>
+            <option value="#ff884d">Orange</option>
+            <option value="#444242">Grey</option>
+        </select>
+        <input type="checkbox" id="dashedLineHorizontal" name="dashedLineHorizontal">
+        <label for="dashedLineHorizontal">Dashed Line</label>
+        <button onclick="addHorizontalLine()">Add Horizontal Line</button>
+        &nbsp;<button onclick="removeHorizontalLine()">Remove Horizontal Line</button>
+
+        <hr>
+        <div class="alert alert-warning" role="alert">
+            You can add the text label and remove the extra label by clicking the remove button.<br>
+            This text label support LaTex, and When adding a text or label, use LaTeX format add <strong>$$</strong> in front and end of the equation.<br>
+            Note: Some of the LaTex might not support or show prefectly and you might ask for post-editing on that graph.<br>
+        </div>
+        <div class="alert alert-danger" role="alert">
+            LaTex is not support on the exported image, if you want to have LaTex equation showed on the image, please ask for <strong>post-editing or using screen-shot to save image</strong>.
+        </div>
+        <label for="textLabels">Add Text Label: </label>
+        <input type="text" id="textLabels" placeholder="Enter your text here">
+        <button onclick="addTextLabel()">Add Text Label</button>
+        <div id="labelList">
+    
+        </div>
+        <br>
+            <!-- Additional controls for adding points -->
+            <label for="pointX">Point X Coordinate: </label>
+            <input id="pointX" type="number" value="">&nbsp;
+            <label for="pointY">Point Y Coordinate: </label>
+            <input id="pointY" type="number" value="">&nbsp;
+            <label for="pointType">Point Type: </label>
+            <select id="pointType">
+                <option value="filled">Filled Point</option>
+                <option value="outline">Outline Point</option>
+            </select>
+
+            <button onclick="addPoint()">Add Point</button>
+            &nbsp;<button onclick="removeLastPoint()">Remove Last Point</button>
+  </div>
+  <footer>
+    <br>
+    <p style="text-align: center">This page was last modified on: <span id="lastModified"></spanp></p>
+    </footer>
+
+
+  <script type="text/javascript">
+document.getElementById('lastModified').textContent = document.lastModified;
+
+
+// Initialize the board
+JXG.Options.text.useMathJax = true;
+
+var board = JXG.JSXGraph.initBoard('jxgbox', { 
+      boundingbox: [-5, 5, 5, -5], 
+      axis:true, // default axis - using the JSXG library with trick and number
+      //grid: false, //disable the grid
+      showCopyright: false,
+      defaultAxes: {
+          x: {
+              ticks: { visible: true, majorHeight: 5, label: {
+                    fontSize: 18 // Set font size for x-axis ticks
+                }}, //remove the grid on x
+              strokeWidth: 2,
+              ticksDistance: 1,
+              strokeColor: '#000000' //default setting - black axis line
+      },
+          y: {
+              ticks: { visible: true, majorHeight: 5, label: {
+                    fontSize: 18 // Set font size for x-axis ticks
+                }}, //remove the grid on y
+              strokeWidth: 2,
+              ticksDistance: 1,
+              strokeColor: '#000000' //default setting - black axis line
+      }
+      }
+  });
+  board.create('text', [-0.2, -0.2, "0"], {
+          fontSize: 18,
+          fixed: false,
+          cssClass: 'OutPutText'
+      });
+
+      /*// Label the x and y axes
+      board.create('text', [4.8, -0.3, "x"], {
+          fontSize: 15,
+          fixed: false,
+          cssClass: 'OutPutText'
+      });
+      board.create('text', [-0.3, 4.8, "y"], {
+          fontSize: 15,
+          fixed: false,
+          cssClass: 'OutPutText'
+      });*/
+    
+      var isForVideoUse = false; // To keep track of the current color set
+
+        function toggleColorsForVideo() {
+        // Toggle the color set flag
+        isForVideoUse = !isForVideoUse;
+
+        // Define color mapping
+        var colorMapping = isForVideoUse ? {
+            '#006DAE': '#b2b200',
+            '#4d934d': '#b26cb2',
+            '#ff884d': '#0077b2',
+            '#850dca': '#7af235',
+            '#898054': '#767fab'
+        } : {
+            '#b2b200': '#006DAE',
+            '#b26cb2': '#4d934d',
+            '#0077b2': '#ff884d',
+            '#7af235': '#850dca',
+            '#767fab': '#898054'
+        };
+
+        // Update the stroke color of existing graph elements here
+        [f1, f2, f3, f4, f5, circle, ellipse_curve, curve1, curve2, plot].forEach(function(element) {
+            if (element) {
+            var currentColor = element.getAttribute('strokeColor');
+            if (colorMapping[currentColor]) {
+                element.setAttribute({strokeColor: colorMapping[currentColor]});
+            }
+            }
+        });
+
+        // Update the board to reflect the changes
+        board.update();
+        }
+
+      var f1;  // Declare a variable to hold the third function graph
+                      var legend1 = null;  // Declare a variable to hold the third legend
+                      function addFirstLine() {
+                          var equationString = document.getElementById('equation').value;
+                          var lowerBound1 = parseFloat(document.getElementById('lowerBound1').value);
+                          var upperBound1 = parseFloat(document.getElementById('upperBound1').value);
+                          if (equationString === '') {
+                              alert('Please enter a valid equation for the second line.');
+                              return;
+                          }
+                          if (isNaN(lowerBound1) || isNaN(upperBound1)) {
+                                alert('Please enter valid lower and upper bounds for the first line.');
+                                return;
+                            }
+                          // Remove any existing third line before adding a new one
+                          if (f1) {
+                              board.removeObject(f1);
+                          }
+
+                          var newFunc = new Function('x', 'return ' + equationString);
+                          f1 = board.create('functiongraph', [newFunc, lowerBound1, upperBound1], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                          board.update();
+                      }
+
+              // Remove the function graph
+              function removeFirstLine() {
+                  if (f1) { 
+                      board.removeObject(f1);
+                      f1 = null; // Set it to null so we know it's removed
+                  }
+              }
+
+      //Add/change 2nd line
+      var f2;  // Declare a variable to hold the third function graph
+              var legend2 = null;  // Declare a variable to hold the third legend
+              function addSecondLine() {
+                  var equationString2 = document.getElementById('equation2').value;
+                  var lowerBound2 = parseFloat(document.getElementById('lowerBound2').value);
+                  var upperBound2 = parseFloat(document.getElementById('upperBound2').value);
+                  if (equationString2 === '') {
+                      alert('Please enter a valid equation for the second line.');
+                      return;
+                  }
+                  if (isNaN(lowerBound2) || isNaN(upperBound2)) {
+                                alert('Please enter valid lower and upper bounds for the Second line.');
+                                return;
+                            }
+                  // Remove any existing third line before adding a new one
+                  if (f2) {
+                      board.removeObject(f2);
+                  }
+
+                  var newFunc2 = new Function('x', 'return ' + equationString2);
+                  f2 = board.create('functiongraph', [newFunc2, lowerBound2, upperBound2], {strokeWidth: currentStrokeWidth, strokeColor: '#4d934d'});
+                  board.update();
+              }
+
+      // Remove the second function graph
+      function removeSecondLine() {
+          if (f2) { // If f2 is defined (i.e., exists)
+              board.removeObject(f2);
+              f2 = null; // Set it to null so we know it's removed
+          }
+      }
+
+     
+
+      //Add extra 3rd line
+      var f3;  // Declare a variable to hold the third function graph
+      var legend3 = null;  // Declare a variable to hold the third legend
+      function addThirdLine() {
+          var equationString3 = document.getElementById('equation3').value;
+          var lowerBound3 = parseFloat(document.getElementById('lowerBound3').value);
+          var upperBound3 = parseFloat(document.getElementById('upperBound3').value);
+          if (equationString3 === '') {
+              alert('Please enter a valid equation for the third line.');
+              return;
+          }
+          if (isNaN(lowerBound3) || isNaN(upperBound3)) {
+                                alert('Please enter valid lower and upper bounds for the third line.');
+                                return;
+                            }
+          // Remove any existing third line before adding a new one
+          if (f3) {
+              board.removeObject(f3);
+          }
+
+          var newFunc3 = new Function('x', 'return ' + equationString3);
+          f3 = board.create('functiongraph', [newFunc3, lowerBound3, upperBound3], {strokeWidth: currentStrokeWidth, strokeColor: '#ff884d'});
+          board.update();
+      }
+
+      // Remove the thrid function graph
+      function removeThridLine() {
+          if (f3) { // If f3 is defined (i.e., exists)
+              board.removeObject(f3);
+              f3 = null; // Set it to null so we know it's removed
+          }
+      }
+
+      var f4; // Declare a variable to hold the fourth function graph
+
+        // Add/update the fourth line based on the user's input
+        function addFourthLine() {
+            var equationString4 = document.getElementById('equation4').value;
+            var lowerBound4 = parseFloat(document.getElementById('lowerBound4').value);
+            var upperBound4 = parseFloat(document.getElementById('upperBound4').value);
+
+            if (equationString4 === '') {
+                alert('Please enter a valid equation for the fourth line.');
+                return;
+            }
+            if (isNaN(lowerBound4) || isNaN(upperBound4)) {
+                alert('Please enter valid lower and upper bounds for the fourth line.');
+                return;
+            }
+            
+            // Remove any existing fourth line before adding a new one
+            if (f4) {
+                board.removeObject(f4);
+            }
+
+            var newFunc4 = new Function('x', 'return ' + equationString4);
+            f4 = board.create('functiongraph', [newFunc4, lowerBound4, upperBound4], {strokeWidth: currentStrokeWidth, strokeColor: '#850dca'});
+            board.update();
+        }
+
+        // Remove the fourth function graph
+        function removeFourthLine() {
+            if (f4) {
+                board.removeObject(f4);
+                f4 = null; // Set it to null so we know it's removed
+                board.update();
+            }
+        }
+
+        var f5; // Declare a variable to hold the fifth function graph
+
+        // Add/update the fifth line based on the user's input
+        function addFifthLine() {
+            var equationString5 = document.getElementById('equation5').value;
+            var lowerBound5 = parseFloat(document.getElementById('lowerBound5').value);
+            var upperBound5 = parseFloat(document.getElementById('upperBound5').value);
+
+            if (equationString5 === '') {
+                alert('Please enter a valid equation for the fifth line.');
+                return;
+            }
+            if (isNaN(lowerBound5) || isNaN(upperBound5)) {
+                alert('Please enter valid lower and upper bounds for the fifth line.');
+                return;
+            }
+            
+            // Remove any existing fifth line before adding a new one
+            if (f5) {
+                board.removeObject(f5);
+            }
+
+            var newFunc5 = new Function('x', 'return ' + equationString5);
+            f5 = board.create('functiongraph', [newFunc5, lowerBound5, upperBound5], {strokeWidth: currentStrokeWidth, strokeColor: '#898054'});
+            board.update();
+        }
+
+        // Remove the fifth function graph
+        function removeFifthLine() {
+            if (f5) {
+                board.removeObject(f5);
+                f5 = null; // Set it to null so we know it's removed
+                board.update();
+            }
+        }
+
+
+      //Adding text label function
+      var textLabels = [];
+
+      function addTextLabel() {
+          var labelText = document.getElementById('textLabels').value;
+          if (labelText === '') {
+              alert('Please enter some text for the label.');
+              return;
+          }
+          
+          var labelObj = board.create('text', [2, 2, labelText], {fontSize: 15, fixed: false,cssClass: 'OutPutText',isLaTeX: true});
+          
+          // Manually update the text to be LaTeX and request a re-render
+          //labelObj.setText('$$' + labelText + '$$');
+          board.update();
+          textLabels.push(labelObj);
+
+
+
+          var labelList = document.getElementById("labelList");
+          var button = document.createElement("button");
+          button.innerHTML = "Remove";
+          button.onclick = function() { removeTextLabel(labelObj, button); };
+
+          var entry = document.createElement("div");
+          entry.innerHTML = labelText + " ";
+          entry.appendChild(button);
+          labelList.appendChild(entry);
+      }
+
+          function removeTextLabel(labelObj, button) {
+              board.removeObject(labelObj);
+              var index = textLabels.indexOf(labelObj);
+              if (index > -1) {
+                  textLabels.splice(index, 1);
+              }
+              button.parentElement.remove();
+          }
+
+          // Variables to hold vertical and horizontal line objects
+          var verticalLines = [];
+          var horizontalLines = [];           
+          var verticalLine = null;
+          var horizontalLine = null;
+
+         // Function to add a vertical line at a given x-value
+         function addVerticalLine() {
+            var x_Verline = parseFloat(document.getElementById("x_Verline").value);
+            var isDashed = document.getElementById("dashedLine").checked;
+            var selectedColor = document.getElementById("lineColor").value;
+
+            if (isNaN(x_Verline)) {
+                alert("Please enter a valid x-value.");
+                return;
+            }
+
+            var lineStyle = {
+                strokeWidth: 2,
+                strokeColor: selectedColor, // Use the selected color
+                straightFirst: false,
+                straightLast: false
+            };
+
+            // If the checkbox is checked, make the line dashed
+            if (isDashed) {
+                lineStyle.dash = 2;
+            }
+
+            var newVerticalLine = board.create('line', [[x_Verline, -50], [x_Verline, 50]], lineStyle);
+            verticalLines.push(newVerticalLine);
+            board.update();
+        }
+
+
+
+            // Function to add a horizontal line at a given y-value
+            function addHorizontalLine() {
+            var y_Horline = parseFloat(document.getElementById("y_Horline").value);
+            var isDashed = document.getElementById("dashedLineHorizontal").checked;
+            var selectedColor = document.getElementById("lineColorHorizontal").value;
+
+            if (isNaN(y_Horline)) {
+                alert("Please enter a valid y-value.");
+                return;
+            }
+
+            var lineStyle = {
+                strokeWidth: 2,
+                strokeColor: selectedColor, // Use the selected color
+                straightFirst: false,
+                straightLast: false
+            };
+
+            // If the checkbox is checked, make the line dashed
+            if (isDashed) {
+                lineStyle.dash = 2;
+            }
+
+            var newHorizontalLine = board.create('line', [[-50, y_Horline], [50, y_Horline]], lineStyle);
+            horizontalLines.push(newHorizontalLine);
+            board.update();
+        }
+
+
+            // Function to remove the last vertical line added
+            function removeVerticalLine() {
+            var lastVerticalLine = verticalLines.pop();
+            if (lastVerticalLine) {
+                board.removeObject(lastVerticalLine);
+            }
+            }
+
+            // Function to remove the last horizontal line added
+            function removeHorizontalLine() {
+            var lastHorizontalLine = horizontalLines.pop();
+            if (lastHorizontalLine) {
+                board.removeObject(lastHorizontalLine);
+            }
+            }
+
+                     var circle;
+
+                    // Function to generate circle
+                    function generateCircle() {
+                        if (circle) {  // Remove existing circle if any
+                            board.removeObject(circle);
+                        }
+
+                        var k = parseFloat(document.getElementById("circle-k").value);
+                        var h = parseFloat(document.getElementById("circle-h").value);
+                        var r = parseFloat(document.getElementById("circle-r").value);
+
+                        circle = board.create('circle', [[k, h], r], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                    }
+
+                    // Function to remove circle
+                    function removeCircle() {
+                        if (circle) {
+                            board.removeObject(circle);
+                            circle = null;
+                        }
+                    }
+
+                    let ellipse_curve;
+
+                    // Function to generate graph based on user input
+                    function updateEllipse() {
+                    const a = parseFloat(document.getElementById('ellipse-a').value);
+                    const b = parseFloat(document.getElementById('ellipse-b').value);
+                    const h = parseFloat(document.getElementById('ellipse-h').value);
+                    const k = parseFloat(document.getElementById('ellipse-k').value);
+
+                    // Remove the old curve if it exists
+                    if (ellipse_curve) {
+                        board.removeObject(ellipse_curve);
+                    }
+
+                    // Create a new curve based on the ellipse equation
+                    ellipse_curve = board.create('curve', [
+                        function(t){ return h + a * Math.cos(t); },
+                        function(t){ return k + b * Math.sin(t); },
+                        0, 2 * Math.PI
+                    ], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                    
+                    board.update();
+                    }
+
+                    // Function to remove the ellipse
+                    function removeEllipse() {
+                    if (curve) {
+                        board.removeObject(curve);
+                        curve = null;
+                        board.update();
+                    }
+                    }
+
+                        var curve1, curve2;
+
+                        function generateHyperbola() {
+                            var a = parseFloat(document.getElementById('hyperbola-a').value);
+                            var b = parseFloat(document.getElementById('hyperbola-b').value);
+                            var h = parseFloat(document.getElementById('hyperbola-h').value);
+                            var k = parseFloat(document.getElementById('hyperbola-k').value);
+
+                            curve1 = board.create('curve', [
+                                function(t) { return h + a * Math.sqrt(t * t / (b * b) + 1); },
+                                function(t) { return k + t; },
+                                -50, 50
+                            ], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                            
+                            curve2 = board.create('curve', [
+                                function(t) { return h - a * Math.sqrt(t * t / (b * b) + 1); },
+                                function(t) { return k + t; },
+                                -50, 50
+                            ], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                        }
+
+                        function removeHyperbola() {
+                            if (curve1 && curve2) {
+                                board.removeObject(curve1);
+                                board.removeObject(curve2);
+                            }
+                        }
+
+
+                         // Initialize plot variable
+                                var plot;
+
+                        // Function to update the piecewise graph
+                        function updatePiecewise() {
+                            var f1 = document.getElementById("piecewise-function1").value;
+                            var f2 = document.getElementById("piecewise-function2").value;
+                            var f3 = document.getElementById("piecewise-function3").value;
+                            var xLimit1 = parseFloat(document.getElementById("piecewise-xLimit1").value);
+                            var xLimit2 = parseFloat(document.getElementById("piecewise-xLimit2").value);
+
+                            // Remove previous plot if exists
+                            if (plot) {
+                                board.removeObject(plot);
+                            }
+
+                            // Define the new piecewise function and plot it
+                            var piecewiseFunction = function(x) {
+                                if (x < xLimit1) {
+                                    return eval(f1);
+                                } else if (x < xLimit2) {
+                                    return eval(f2);
+                                } else {
+                                    return eval(f3);
+                                }
+                            };
+
+                            // Plot the new function
+                            plot = board.create('functiongraph', [piecewiseFunction, -50, 50], {strokeWidth: currentStrokeWidth, strokeColor: '#006DAE'});
+                        }
+
+                        // Function to remove the piecewise graph
+                        function removePiecewise() {
+                            if (plot) {
+                                board.removeObject(plot);
+                                plot = null;
+                            }
+                        }
+
+
+                    var points = [];
+                        // Function to add a point at given (x, y)
+                        function addPoint() {
+                        var x = parseFloat(document.getElementById("pointX").value);
+                        var y = parseFloat(document.getElementById("pointY").value);
+                        var pointType = document.getElementById("pointType").value;
+
+                        if (isNaN(x) || isNaN(y)) {
+                            alert("Please enter valid x and y coordinates.");
+                            return;
+                        }
+
+                        // Attributes for the filled point
+                        var filledPointAttributes = {
+                            name: ' ',
+                            fillColor: 'red',
+                            strokeColor: 'red',
+                            strokeWidth: 5,
+                            fixed: false
+                        };
+
+                        // Attributes for the outline point
+                        var outlinePointAttributes = {
+                            name: ' ',
+                            fillColor: '#FFF',
+                            strokeColor: 'red',
+                            strokeWidth: 3.5,
+                            fixed: false
+                        };
+
+                        // Choose the attributes based on the point type
+                        var attributes = (pointType === "filled") ? filledPointAttributes : outlinePointAttributes;
+
+                        var newPoint = board.create('point', [x, y], attributes);
+                        points.push(newPoint);
+                        board.update();
+                        }
+
+
+                        // Function to remove the last point added
+                        function removeLastPoint() {
+                        var lastPoint = points.pop();
+                        if (lastPoint) {
+                            board.removeObject(lastPoint);
+                        }
+                        }
+
+                        function changeLineColor(selectElementId, jsxGraphElement) {
+                            var selectElement = document.getElementById(selectElementId);
+                            var selectedColor = selectElement.options[selectElement.selectedIndex].value;
+                            if (jsxGraphElement) {
+                                jsxGraphElement.setAttribute({strokeColor: selectedColor});
+                                board.update();
+                            }
+                            }
+     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     !!!ANYTHING ON BELOW ARE THE GOLBAL FUNCTIONS AND ABLE TO APPLY FOR ALL THE TEMPLATE, PUT ANYTHING WILL SUIT WITH OTHER CODE ON BELOW!!!!!
+     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  
+     // Add this function to your existing JavaScript code
+     //Function for end-user to change image size by input - Don't change
+     function resizeBoard() {
+          var newWidth = document.getElementById('width').value;
+          var newHeight = document.getElementById('height').value;
+
+          var container = document.getElementById('jxgbox');
+          container.style.width = newWidth + 'px';
+          container.style.height = newHeight + 'px';
+
+          board.resizeContainer(newWidth, newHeight);
+      }
+
+      //Function to export the reference text file
+      function exportInputsToTextFile(filename) {
+      // Get the current date and time
+      var currentDate = new Date();
+      const melbourneDateString = currentDate.toLocaleString("en-AU", { timeZone: "Australia/Melbourne" });
+      var dateString = currentDate.toISOString().slice(0, 19).replace("T", " ");
+
+      var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+      var content = "";
+      content +="This text file serves as a reference document to record the image attributes and equations. \n";
+      content +="The corresponding image to text file is " + filename + ".png \n";
+      content += "Image Generated on: " + melbourneDateString + "\n";
+
+      inputs.forEach(function(input) {
+          content += input.id + ": " + input.value + "\n";
+      });
+
+      var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+      var link = document.createElement("a");
+      link.setAttribute("href", URL.createObjectURL(blob));
+      link.setAttribute("download", filename + "_info.txt");
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  }
+
+  var currentStrokeWidth = 4; // Default stroke width
+
+function updateStrokeWidth() {
+  // Update the current stroke width
+  currentStrokeWidth = document.getElementById('strokeWidth').value;
+
+  // Update the stroke width of existing graph elements here
+  if (f1) {
+    f1.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (f2) {
+    f2.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (f3) {
+    f3.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (circle) {
+    circle.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (ellipse_curve) {
+    ellipse_curve.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (curve1 && curve2) {
+    curve1.setAttribute({strokeWidth: currentStrokeWidth});
+    curve2.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+  if (plot) {
+    plot.setAttribute({strokeWidth: currentStrokeWidth});
+  }
+
+  // Update the board to reflect the changes
+  board.update();
+}
+     /*This part cannot be modified, this is the function for exporting image*/
+      // Function to export the JSXGraph board as a PNG image
+      function exportBoard() {
+          // Get a user-defined filename or use a default
+          var filename = prompt("Please enter the filename by using the format: \nDomainModule_keyword/topic_graphNumber\nExample: DXMX_XXXX_1", "DXMX_XXXX");
+          if (filename === null || filename === "") return;
+
+          // Call function to export text file
+          exportInputsToTextFile(filename);
+
+          // Your existing code to export image
+          var svgElement = document.querySelector('#' + board.containerObj.id + ' svg');
+          var clonedSvgElement = svgElement.cloneNode(true);
+
+          var textElements = document.querySelectorAll('#' + board.containerObj.id + ' .OutPutText');
+          textElements.forEach(function(textElement) {
+              var position = textElement.getBoundingClientRect();
+              var svgPosition = svgElement.getBoundingClientRect();
+
+              var textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
+              textNode.setAttribute('x', position.left - svgPosition.left);
+              textNode.setAttribute('y', position.top - svgPosition.top + parseInt(window.getComputedStyle(textElement).fontSize, 10));
+
+              textNode.setAttribute('font-size', '16px');
+              textNode.setAttribute('font-family', 'Arial');
+              textNode.setAttribute('font-weight', 'bold');
+              textNode.textContent = textElement.textContent;
+
+              clonedSvgElement.appendChild(textNode);
+          });
+
+          var xml = new XMLSerializer().serializeToString(clonedSvgElement);
+          var image = new Image();
+          image.src = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(xml)));
+
+          image.onload = function() {
+              var canvas = document.createElement('canvas');
+              canvas.width = image.width;
+              canvas.height = image.height;
+              var ctx = canvas.getContext('2d');
+              ctx.drawImage(image, 0, 0);
+
+              var imgData = canvas.toDataURL('image/png');
+              var link = document.createElement('a');
+              link.href = imgData;
+              link.download = filename + '.png';
+
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+          };
+      }
+  </script>
+</body>
+</html>
