@@ -163,7 +163,25 @@
         </select>
         <button onclick="changeLineColor('colorForf5', f5)">Change Color</button>
         <button onclick="addFifthLine()">Add/update Fifth Line</button>&nbsp;<button onclick="removeFifthLine()">Remove Fifth Line</button>
-
+<!--6th lines-->
+<p><strong>6th line</strong></p>
+<label for="equation6">Add Equation 6 (use 'x' as the variable): </label>
+<input id="equation6" type="text" value="">&nbsp;
+<br>
+<label for="lowerBound6">Lower Bound for Line 6: </label>
+<input id="lowerBound6" type="number" value="-50" style="width:5%">&nbsp;
+<label for="upperBound6">Upper Bound for Line 6: </label>
+<input id="upperBound6" type="number" value="50" style="width:5%">&nbsp;
+<select id="colorForf6">
+    <option value="#006DAE">Blue</option>
+    <option value="#4d934d">Green</option>
+    <option value="#ff884d">Orange</option>
+    <option value="#444242">Grey</option>
+    <option value="#850dca">Purple</option>
+    <option value="#898054">Brown</option>     
+</select>
+<button onclick="changeLineColor('colorForf6', f6)">Change Color</button>
+<button onclick="addSixthLine()">Add/update Sixth Line</button>&nbsp;<button onclick="removeSixthLine()">Remove Sixth Line</button>
       </div>
       <div class="tab-pane fade" id="circle" role="tabpanel" aria-labelledby="circle-tab">
         <!-- Content for Circle Equation -->
@@ -593,6 +611,41 @@ var board = JXG.JSXGraph.initBoard('jxgbox', {
             }
         }
 
+        var f6; // Declare a variable to hold the fifth function graph
+
+        // Add/update the fifth line based on the user's input
+        function addSixthLine() {
+            var equationString6 = document.getElementById('equation6').value;
+            var lowerBound6 = parseFloat(document.getElementById('lowerBound6').value);
+            var upperBound6 = parseFloat(document.getElementById('upperBound6').value);
+
+            if (equationString6 === '') {
+                alert('Please enter a valid equation for the sixth line.');
+                return;
+            }
+            if (isNaN(lowerBound6) || isNaN(upperBound6)) {
+                alert('Please enter valid lower and upper bounds for the sixth line.');
+                return;
+            }
+            
+            // Remove any existing 6th line before adding a new one
+            if (f6) {
+                board.removeObject(f6);
+            }
+
+            var newFunc6 = new Function('x', 'return ' + equationString6);
+            f6 = board.create('functiongraph', [newFunc6, lowerBound6, upperBound6], {strokeWidth: currentStrokeWidth, strokeColor: '#EE64A4'});
+            board.update();
+        }
+
+        // Remove the sixth function graph
+        function removeSixthLine() {
+            if (f6) {
+                board.removeObject(f6);
+                f6 = null; // Set it to null so we know it's removed
+                board.update();
+            }
+        }
 
       //Adding text label function
       var textLabels = [];
