@@ -12,7 +12,7 @@
 <body>
 
   <div class="container mt-5">
-    <h1>JSX-Graph Online Builder</h1>
+    <h1>JSX-Graph Online Builder (Version 2.0 - 150725)</h1>
     <!-- JSX graphs board-->
     <div id="jxgbox" class="jxgbox" style="width: 800px; height: 800px;"></div>
     <hr>
@@ -27,8 +27,23 @@
     <input id="strokeWidth" type="number" value="6">
     <button onclick="updateStrokeWidth()">Update Stroke Width</button>
     <button onclick="toggleColorsForVideo()">Change for Video Use Colours</button>
-
     <hr>
+    <!-- Bounding‐Box controls -->
+ <h5>Adjust the 4 values below to zoom in or zoom out the board.</h5>
+<label for="xmin">xMin:</label>
+<input id="xmin" type="number" value="-5" style="width:6%;">
+
+<label for="ymax">yMax:</label>
+<input id="ymax" type="number" value="5" style="width:6%;">
+
+<label for="xmax">xMax:</label>
+<input id="xmax" type="number" value="5" style="width:6%;">
+
+<label for="ymin">yMin:</label>
+<input id="ymin" type="number" value="-5" style="width:6%;">
+
+<button onclick="updateBoundingBox()">Update Bounding Box</button>
+<hr>
     <div class="alert alert-primary" role="alert">
         Reminder: You will download two files once you click on the export button. <br>
         Please upload both files onto relevant Google Drive for record.
@@ -947,6 +962,18 @@ var board = JXG.JSXGraph.initBoard('jxgbox', {
                                 board.update();
                             }
                             }
+
+                            function updateBoundingBox() {
+  // read values from the inputs
+  var xmin = parseFloat(document.getElementById('xmin').value),
+      ymax = parseFloat(document.getElementById('ymax').value),
+      xmax = parseFloat(document.getElementById('xmax').value),
+      ymin = parseFloat(document.getElementById('ymin').value);
+
+  // apply immediately (true → redraw right away)
+  board.setBoundingBox([xmin, ymax, xmax, ymin], true);
+}
+
      /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      !!!ANYTHING ON BELOW ARE THE GOLBAL FUNCTIONS AND ABLE TO APPLY FOR ALL THE TEMPLATE, PUT ANYTHING WILL SUIT WITH OTHER CODE ON BELOW!!!!!
      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
